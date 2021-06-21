@@ -1,12 +1,17 @@
 package src
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/yeejiac/BlockChain/models"
 )
 
-func GenerateHashValue(nonce string, timestamp string, transaction models.Transaction, previous_hash string) string {
-	fmt.Println("test")
-	return "success"
+func GenerateHashValue(transaction models.Transaction) string {
+	out, err := json.Marshal(transaction)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(out))
+	return string(out)
 }

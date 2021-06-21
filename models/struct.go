@@ -1,28 +1,28 @@
 package models
 
 type Transaction struct {
-	sender   string `json:"sender"`
-	receiver string `json:"receiver"`
-	amounts  string `json:"amounts"`
-	fee      string `json:"fee"`
-	message  string `json:"message"`
+	Sender   string `json:"sender"`
+	Receiver string `json:"receiver"`
+	Amounts  string `json:"amounts"`
+	Fee      string `json:"fee"`
+	Message  string `json:"message"`
 }
 
 type Block struct {
-	previous_hash   string `json:"previous_hash"`
-	hash            string `json:"hash"`
-	nonce           string `json:"nonce"`
-	timestamp       string `json:"timestamp"`
-	miner           string `json:"miner"`
-	miner_rewards   string `json:"miner_rewards"`
-	transaction_ary []Transaction
+	Previous_hash   string `json:"previous_hash"`
+	Hash            string `json:"hash"`
+	Nonce           string `json:"nonce"`
+	Timestamp       string `json:"timestamp"`
+	Miner           string `json:"miner"`
+	Miner_rewards   string `json:"miner_rewards"`
+	Transaction_ary []Transaction
 }
 
 type BlockChain struct {
-	block_ary            []Block
-	pending_transactions []Transaction
-	difficulty           string `json:"difficulty"`
-	block_time           string `json:"block_time"`
-	mining_rewards       string `json:"mining_rewards"`
-	block_limitation     string `json:"block_limitation"`
+	Block_ary            []Block
+	Pending_transactions []Transaction
+	Difficulty           string `json:"difficulty"`
+	Block_time           string `json:"block_time"`
+	Mining_rewards       string `json:"mining_rewards"`
+	Block_limitation     string `json:"block_limitation"`
 }
