@@ -10,6 +10,7 @@ type Transaction struct {
 
 type Block struct {
 	Previous_hash   string `json:"previous_hash"`
+	Difficulty      int64  `json:"difficulty"`
 	Hash            string `json:"hash"`
 	Nonce           string `json:"nonce"`
 	Timestamp       string `json:"timestamp"`
@@ -21,8 +22,8 @@ type Block struct {
 type BlockChain struct {
 	Block_ary            []Block
 	Pending_transactions []Transaction
-	Difficulty           string `json:"difficulty"`
 	Block_time           string `json:"block_time"`
 	Mining_rewards       string `json:"mining_rewards"`
 	Block_limitation     string `json:"block_limitation"`
+	Difficulty           int    `json:"difficulty"`
 }

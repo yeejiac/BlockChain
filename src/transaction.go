@@ -1,9 +1,9 @@
 package src
 
 import (
-	"crypto/sha1"
 	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"math/rand"
 
 	"github.com/yeejiac/BlockChain/models"
@@ -35,15 +35,21 @@ func GenerateTransactionHash(block models.Block) string {
 	return res
 }
 
-func GenerateBlockHash(block models.Block, nonce string) string {
-	blockStr := block.Previous_hash + block.Timestamp + GenerateTransactionHash(block) + block.Nonce
-	h := sha1.New()
+func GenerateBlockHash(block models.Block, nonce int) string {
+	blockStr := block.Previous_hash + block.Timestamp + GenerateTransactionHash(block) + GenerateNonce(nonce)
+	h := fnv.New32a()
 	h.Write([]byte(blockStr))
-	return string(h.Sum([]byte{}))
+
+	strval := fmt.Sprintf("%0*d", 10, h.Sum32())
+	str := fmt.Sprint(strval)
+	return str
 }
 
 func GenerateGenesisBlock() *models.Block {
 	fmt.Println("Generate genesis block")
 	var block models.Block
+	block.Previous_hash = "Generate genesis block"
+	block.Difficulty = 1
+	block.Miner = "Test123"
 	return &block
 }
