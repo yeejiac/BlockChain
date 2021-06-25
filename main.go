@@ -1,15 +1,23 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
 )
 
 func main() {
-	// a := models.Transaction{Sender: "Yee", Receiver: "Arisa", Amounts: "56", Fee: "50", Message: "test"}
-	// src.GenerateHashValue(a)
-	// fmt.Println(src.GenerateNonce(5))
-	var blockchain models.BlockChain
-	blockchain.Difficulty = 5
-	src.MineBlock(blockchain)
+	if os.Args[1] == "node" {
+		fmt.Println("Node mode start")
+	} else if os.Args[1] == "server" {
+		fmt.Println("Node mode start")
+		var blockchain models.BlockChain
+		blockchain.Difficulty = 5
+		src.MineBlock(blockchain)
+	} else {
+		fmt.Println("Args error")
+	}
+
 }
