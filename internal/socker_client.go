@@ -7,9 +7,9 @@ import (
 )
 
 func StartClient() {
-	res, err := sendTCP("127.0.0.1:8000", "hi")
+	res, err := sendTCP("127.0.0.1:1203", "hi")
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("Lose connection")
 	} else {
 		fmt.Println(res)
 	}
@@ -23,7 +23,7 @@ func sendTCP(addr, msg string) (string, error) {
 		return "", err
 	}
 	defer conn.Close()
-
+	log.Println("Connect to server success")
 	// send to socket
 	conn.Write([]byte(msg))
 

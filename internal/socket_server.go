@@ -8,7 +8,7 @@ import (
 )
 
 func StartServer() {
-	li, err := net.Listen("tcp", ":8080")
+	li, err := net.Listen("tcp", ":1203")
 	if err != nil {
 		log.Fatalln(err)
 	}
