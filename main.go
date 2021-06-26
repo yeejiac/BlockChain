@@ -14,14 +14,16 @@ func main() {
 		internal.StartClient()
 	} else if os.Args[1] == "server" {
 		var blockchain models.BlockChain
+		var tempblock models.Block
 		blockchain.Difficulty = 1
 		blockchain.Block_ary = append(blockchain.Block_ary, src.GenerateGenesisBlock())
-		src.MineBlock(&blockchain)
+		tempblock = src.MineBlock(&blockchain)
+		if src.CheckCorrectness(tempblock, 5, blockchain.Difficulty){
+			fmt.Println("correct")
+		} else {
+			fmt.Println("false")
+		}
 		fmt.Println("Node mode start")
-		// internal.StartServer()
-		// var blockchain models.BlockChain
-		// blockchain.Difficulty = 5
-		// src.MineBlock(blockchain)
 	} else {
 		fmt.Println("Args error")
 	}
