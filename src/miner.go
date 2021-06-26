@@ -13,10 +13,11 @@ func GenerateDifficultyTarget(times int) string {
 	return res
 }
 
-func MineBlock(blockchain models.BlockChain) {
+func MineBlock(blockchain *models.BlockChain) {
 	fmt.Println("Mine Block")
+	fmt.Println("Block size " + strconv.Itoa(len(blockchain.Block_ary)))
 	var block models.Block
-	last_block := GenerateGenesisBlock()
+	last_block := blockchain.Block_ary[len(blockchain.Block_ary)-1]
 	block.Previous_hash = last_block.Hash
 	block.Hash = GenerateBlockHash(block, 0)
 

@@ -45,11 +45,11 @@ func GenerateBlockHash(block models.Block, nonce int) string {
 	return str
 }
 
-func GenerateGenesisBlock() *models.Block {
+func GenerateGenesisBlock() models.Block {
 	fmt.Println("Generate genesis block")
 	var block models.Block
 	block.Previous_hash = "Generate genesis block"
 	block.Difficulty = 1
 	block.Miner = "Test123"
-	return &block
+	return block
 }
