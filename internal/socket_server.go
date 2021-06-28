@@ -7,7 +7,12 @@ import (
 	"net"
 )
 
+var connectionMap map[int]net.Conn
+
+var sequence = 1
+
 func StartServer() {
+	connectionMap = make(map[int]net.Conn)
 	li, err := net.Listen("tcp", ":1203")
 	if err != nil {
 		log.Fatalln(err)
@@ -21,6 +26,8 @@ func StartServer() {
 			log.Println(err)
 			continue
 		}
+		connectionMap[sequence] = conn
+		sequence++
 		go Handle(conn)
 	}
 }
@@ -34,4 +41,8 @@ func Handle(conn net.Conn) {
 	defer conn.Close()
 
 	fmt.Println("連線中斷.")
+}
+
+func SendHeartbeat(conn net.Conn) {
+
 }

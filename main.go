@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/yeejiac/BlockChain/models"
+
 	"github.com/yeejiac/BlockChain/internal"
+	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
 )
 
@@ -18,12 +19,13 @@ func main() {
 		blockchain.Difficulty = 1
 		blockchain.Block_ary = append(blockchain.Block_ary, src.GenerateGenesisBlock())
 		tempblock = src.MineBlock(&blockchain)
-		if src.CheckCorrectness(tempblock, 5, blockchain.Difficulty){
+		if src.CheckCorrectness(tempblock, 5, blockchain.Difficulty) {
 			fmt.Println("correct")
 		} else {
 			fmt.Println("false")
 		}
 		fmt.Println("Node mode start")
+
 	} else {
 		fmt.Println("Args error")
 	}

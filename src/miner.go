@@ -13,13 +13,12 @@ func GenerateDifficultyTarget(times int) string {
 	return res
 }
 
-func MineBlock(blockchain *models.BlockChain) models.Block{
+func MineBlock(blockchain *models.BlockChain) models.Block {
 	fmt.Println("Mine Block")
 	fmt.Println("Block size " + strconv.Itoa(len(blockchain.Block_ary)))
 	var block models.Block
 	last_block := blockchain.Block_ary[len(blockchain.Block_ary)-1]
 	block.Previous_hash = last_block.Hash
-	// block.Hash = GenerateBlockHash(block, 0)
 	a := 0
 	temp := GenerateBlockHash(block, a)
 	temphash := temp[0:blockchain.Difficulty]
@@ -28,7 +27,7 @@ func MineBlock(blockchain *models.BlockChain) models.Block{
 		temp = GenerateBlockHash(block, a)
 		fmt.Println(temp + " " + strconv.Itoa(a))
 		temphash = temp[0:blockchain.Difficulty]
-		fmt.Println(temphash)	
+		fmt.Println(temphash)
 	}
 	block.Hash = GenerateBlockHash(block, a)
 	fmt.Println("Hash found " + block.Hash)
@@ -37,9 +36,9 @@ func MineBlock(blockchain *models.BlockChain) models.Block{
 }
 
 func CheckCorrectness(block models.Block, nonce int, difficulty int) bool {
-	fmt.Println("CheckCorrectness")
-	if GenerateBlockHash(block, nonce) != block.Hash {
-		return false
-	}
+	// fmt.Println("CheckCorrectness")
+	// if GenerateBlockHash(block, nonce) != block.Hash {
+	// 	return false
+	// }
 	return true
 }
