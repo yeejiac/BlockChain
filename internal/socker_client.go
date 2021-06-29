@@ -29,3 +29,7 @@ func sendTCP(conn net.Conn) {
 		}
 	}
 }
+
+func HandleNewTransaction(rawStr string) {
+
+}

@@ -9,6 +9,8 @@ import (
 	"github.com/yeejiac/BlockChain/models"
 )
 
+var blockchain models.BlockChain
+
 func GenerateNonce(n int) string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	b := make([]byte, n)
@@ -45,6 +47,15 @@ func GenerateBlockHash(block models.Block, nonce int) string {
 	return str
 }
 
+func GenerateBlockHashStr(blockstr string, nonce int) string {
+	h := fnv.New32a()
+	h.Write([]byte(blockstr))
+
+	strval := fmt.Sprintf("%0*d", 10, h.Sum32())
+	str := fmt.Sprint(strval)
+	return str
+}
+
 func GenerateGenesisBlock() models.Block {
 	fmt.Println("Generate genesis block")
 	var block models.Block
@@ -52,4 +63,9 @@ func GenerateGenesisBlock() models.Block {
 	block.Difficulty = 1
 	block.Miner = "Test123"
 	return block
+}
+
+func InitBlockChain() {
+	blockchain.Difficulty = 1
+	blockchain.Block_ary = append(blockchain.Block_ary, GenerateGenesisBlock())
 }
