@@ -2,20 +2,18 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/yeejiac/BlockChain/internal"
 )
 
 func main() {
-	f, err := os.OpenFile("./log/testlogfile.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	defer f.Close()
-	log.SetOutput(f)
-
+	// f, err := os.OpenFile("./log/testlogfile.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	// if err != nil {
+	// 	log.Fatalf("error opening file: %v", err)
+	// }
+	// defer f.Close()
+	// log.SetOutput(f)
 	if os.Args[1] == "node" {
 		fmt.Println("Node mode start")
 		internal.StartClient()
@@ -30,9 +28,8 @@ func main() {
 		// } else {
 		// 	fmt.Println("false")
 		// }
-		fmt.Println("Node mode start")
+		fmt.Println("Server mode start")
 		internal.StartServer()
-
 	} else {
 		fmt.Println("Args error")
 	}

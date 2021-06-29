@@ -14,7 +14,7 @@ var sequence = 1
 
 func StartServer() {
 	connectionMap = make(map[int]net.Conn)
-	li, err := net.Listen("tcp", ":1203")
+	li, err := net.Listen("tcp", ":1204")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -56,6 +56,9 @@ func SendHeartbeat(conn net.Conn) {
 }
 
 func BroadCast(msg string) {
+	if len(connectionMap) == 0 {
+		return
+	}
 	for key, val := range connectionMap {
 		fmt.Println("Send to Connection : " + strconv.Itoa(key))
 		val.Write([]byte(msg))

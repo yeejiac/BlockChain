@@ -7,7 +7,7 @@ import (
 
 func StartClient() {
 	log.Println("Try connect to socket server")
-	conn, err := net.Dial("tcp", "127.0.0.1:1203")
+	conn, err := net.Dial("tcp", ":1204")
 	if err != nil {
 		log.Println("Connect failed")
 	}
@@ -19,7 +19,7 @@ func StartClient() {
 
 func sendTCP(conn net.Conn) {
 	for {
-		conn.Write([]byte("HI"))
+		conn.Write([]byte("<3"))
 		bs := make([]byte, 1024)
 		len, err := conn.Read(bs)
 		if err != nil {
