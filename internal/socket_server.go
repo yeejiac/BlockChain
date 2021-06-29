@@ -1,10 +1,11 @@
 package internal
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"net"
+	"strconv"
+	"time"
 )
 
 var connectionMap map[int]net.Conn
@@ -29,20 +30,35 @@ func StartServer() {
 		connectionMap[sequence] = conn
 		sequence++
 		go Handle(conn)
+		go SendHeartbeat(conn)
 	}
 }
 
 func Handle(conn net.Conn) {
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		ln := scanner.Text()
-		fmt.Println(ln)
+	for {
+		bs := make([]byte, 1024)
+		len, err := conn.Read(bs)
+		if err != nil {
+			log.Println(err)
+			break
+		} else {
+			log.Println(string(bs[:len]))
+		}
 	}
-	defer conn.Close()
-
 	fmt.Println("連線中斷.")
 }
 
 func SendHeartbeat(conn net.Conn) {
+	for {
+		conn.Write([]byte("<3\n"))
+		time.Sleep(5 * time.Second)
+	}
+}
 
+func BroadCast(msg string) {
+	for key, val := range connectionMap {
+		fmt.Println("Send to Connection : " + strconv.Itoa(key))
+		val.Write([]byte(msg))
+	}
+	fmt.Println("BroadCast finished")
 }
