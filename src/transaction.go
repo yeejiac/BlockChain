@@ -10,6 +10,7 @@ import (
 )
 
 var blockchain models.BlockChain
+var block models.Block
 
 func GenerateNonce(n int) string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -65,7 +66,18 @@ func GenerateGenesisBlock() models.Block {
 	return block
 }
 
+func AppendBlock(block models.Block) {
+	blockchain.Block_ary = append(blockchain.Block_ary, block)
+}
+
 func InitBlockChain() {
 	blockchain.Difficulty = 1
 	blockchain.Block_ary = append(blockchain.Block_ary, GenerateGenesisBlock())
+
+}
+
+func InitNewBlock() models.Block {
+	block.Difficulty = 3
+	block.Nonce = 0
+	return block
 }

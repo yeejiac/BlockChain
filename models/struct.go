@@ -1,11 +1,10 @@
 package models
 
-
 type Transaction struct {
 	Sender   string `json:"sender"`
 	Receiver string `json:"receiver"`
 	Amounts  string `json:"amounts"`
-	Fee      string `json:"fee"`
+	Fee      int    `json:"fee"`
 	Message  string `json:"message"`
 }
 
@@ -13,7 +12,7 @@ type Block struct {
 	Previous_hash   string `json:"previous_hash"`
 	Difficulty      int64  `json:"difficulty"`
 	Hash            string `json:"hash"`
-	Nonce           string `json:"nonce"`
+	Nonce           int    `json:"nonce"`
 	Timestamp       string `json:"timestamp"`
 	Miner           string `json:"miner"`
 	Miner_rewards   string `json:"miner_rewards"`
