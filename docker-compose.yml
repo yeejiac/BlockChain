@@ -19,7 +19,7 @@ services:
     # blockchain_node1:
     #     build:
     #         context: .
-    #     node_1: blockchain
+    #     container_name: node1
     #     environment:
     #         - TZ=Asia/Taipei
     #     restart: always
