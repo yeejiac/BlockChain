@@ -1,6 +1,15 @@
+Client Side Receive
 New Transaction
 10|Sender|Receiver|amount|
 10|yeejiac|Arisa|100|
 
 Get Hash block
-20|Hash
+20|Hash|Numbering
+
+Apply for being miner
+30|
+
+-------------------------------------------------
+Server Side Receive
+Nonce Result
+40|Nonce|Numbering

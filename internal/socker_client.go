@@ -11,7 +11,7 @@ import (
 	"github.com/yeejiac/BlockChain/src"
 )
 
-// var socket_connection net.Conn
+var socket_connection net.Conn
 
 func StartClient() {
 	fmt.Println("Try connect to socket server")
@@ -21,25 +21,25 @@ func StartClient() {
 	}
 	defer conn.Close()
 	fmt.Println("Connect to server success")
-	// socket_connection = conn
-	go sendInput(conn)
-	sendTCP(conn)
+	socket_connection = conn
+	go sendInput()
+	receive(conn)
 }
 
-func sendInput(conn net.Conn) {
+func sendInput() {
 	for {
 		var tempStr string
 		fmt.Println("Input string :")
 		fmt.Scanln(&tempStr)
-		conn.Write([]byte(tempStr))
+		socket_connection.Write([]byte(tempStr))
 	}
 }
 
-// func SendMsg(str string) {
-// 	socket_connection.Write([]byte(str))
-// }
+func SendMsg(str string) {
+	socket_connection.Write([]byte(str))
+}
 
-func sendTCP(conn net.Conn) {
+func receive(conn net.Conn) {
 	for {
 		bs := make([]byte, 1024)
 		len, err := conn.Read(bs)
@@ -60,18 +60,9 @@ func HandleMsg(rawStr string) {
 	}
 
 	switch num {
-	case 10:
-		log.Println("Get New Transaction")
-		HandleNewTransaction(rawStr)
-	case 20:
-		log.Println("Get hash block str")
-		// res := HandleHashBlock(rawStr)
-		// SendMsg(res)
-	case 2:
-		log.Println("C")
-	case 3:
-		log.Println("D")
-	default: //default:當前面條件都沒有滿足時將會執行此處內包含的方法
+	case 40:
+		log.Println("Get Nonce")
+	default:
 		fmt.Println("Invalid message")
 	}
 }

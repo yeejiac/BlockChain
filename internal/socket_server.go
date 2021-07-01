@@ -6,6 +6,8 @@ import (
 	"net"
 	"strconv"
 	"time"
+
+	"gopkg.in/ini.v1"
 )
 
 var connectionMap map[int]net.Conn
@@ -13,8 +15,16 @@ var connectionMap map[int]net.Conn
 var sequence = 1
 
 func StartServer() {
+	cfg, err := ini.Load("./config/setting.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		return
+	}
+	addr := ":"
+	port := cfg.Section("socket").Key("port").String()
+
 	connectionMap = make(map[int]net.Conn)
-	li, err := net.Listen("tcp", ":1203")
+	li, err := net.Listen("tcp", addr+port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -64,4 +74,25 @@ func BroadCast(msg string) {
 		val.Write([]byte(msg))
 	}
 	fmt.Println("BroadCast finished")
+}
+
+func HandelServerMsg(rawStr string) {
+	num, err := strconv.Atoi(rawStr[0:2])
+	if err != nil {
+		// handle error
+		fmt.Println("Invalid message stucture")
+		return
+	}
+
+	switch num {
+	case 10:
+		log.Println("Get New Transaction")
+		HandleNewTransaction(rawStr)
+	case 20:
+		log.Println("Get hash block str")
+		res := HandleHashBlock(rawStr)
+		SendMsg(res)
+	default:
+		fmt.Println("Invalid message")
+	}
 }
