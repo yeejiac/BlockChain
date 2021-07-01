@@ -1,3 +1,6 @@
-Transaction
-Sender|Receiver|amount|
-yeejiac|Arisa|100|
+New Transaction
+10|Sender|Receiver|amount|
+10|yeejiac|Arisa|100|
+
+Get Hash block
+20|Hash

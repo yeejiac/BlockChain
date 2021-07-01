@@ -8,6 +8,8 @@ import (
 	"github.com/yeejiac/BlockChain/models"
 )
 
+var difficulty int
+
 func GenerateDifficultyTarget(times int) string {
 	res := strings.Repeat("0", times)
 	return res
@@ -33,6 +35,20 @@ func MineBlock(blockchain *models.BlockChain) models.Block {
 	fmt.Println("Hash found " + block.Hash)
 	fmt.Println("Nonce " + strconv.Itoa(a))
 	return block
+}
+
+func NonceCalculate(hashStr string) int {
+	a := 0
+	temp := GenerateBlockHashStr(hashStr, a)
+	temphash := temp[0:difficulty]
+	for temphash != GenerateDifficultyTarget(difficulty) {
+		a++
+		temp = GenerateBlockHashStr(hashStr, a)
+		fmt.Println(temp + " " + strconv.Itoa(a))
+		temphash = temp[0:difficulty]
+		fmt.Println(temphash)
+	}
+	return a
 }
 
 func CheckCorrectness(block models.Block, nonce int, difficulty int) bool {

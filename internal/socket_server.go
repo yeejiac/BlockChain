@@ -14,7 +14,7 @@ var sequence = 1
 
 func StartServer() {
 	connectionMap = make(map[int]net.Conn)
-	li, err := net.Listen("tcp", ":1204")
+	li, err := net.Listen("tcp", ":1203")
 	if err != nil {
 		log.Fatalln(err)
 	}

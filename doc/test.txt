@@ -1,0 +1,14 @@
+int fib(int i)
+{
+    std::vector<int> tempary;
+    for(int a = 0; a<=i; a++)
+    {
+        if(i == 0)
+            tempary.insert(0);
+        if(i == 1 || i == 2)
+            tempary.insert(1);
+        else
+            tempary.insert(tempary[a-1] + tempary[a-1]);
+    }
+    return tempary.back();
+}
