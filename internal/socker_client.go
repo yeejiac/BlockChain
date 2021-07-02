@@ -9,28 +9,27 @@ import (
 
 	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
-	"gopkg.in/ini.v1"
 )
 
 var socket_connection net.Conn
 
 func StartClient() {
-	cfg, err := ini.Load("./config/setting.ini")
-	if err != nil {
-		fmt.Printf("Fail to read file: %v", err)
-		return
-	}
-	addr := ":"
-	port := cfg.Section("socket").Key("port").String()
-	fmt.Println("Try connect to socket server: " + addr + port)
-	conn, err := net.Dial("tcp", addr+port)
+	// cfg, err := ini.Load("./config/setting.ini")
+	// if err != nil {
+	// 	fmt.Printf("Fail to read file: %v", err)
+	// 	return
+	// }
+	// addr := cfg.Section("socket").Key("addr").String() + ":"
+	// port := cfg.Section("socket").Key("port").String()
+	fmt.Println("Try connect to socket server: 172.28.0.3:1203")
+	conn, err := net.Dial("tcp", "172.28.0.3:1203")
 	if err != nil {
 		fmt.Println("Connect failed")
 	}
 	defer conn.Close()
 	fmt.Println("Connect to server success")
 	socket_connection = conn
-	go sendInput()
+	go SendHeartbeat(conn)
 	receive(conn)
 }
 

@@ -16,20 +16,20 @@ services:
         networks:
             vpcbr:
                 ipv4_address: 172.28.0.3
-    # blockchain_node1:
-    #     build:
-    #         context: .
-    #     container_name: node1
-    #     environment:
-    #         - TZ=Asia/Taipei
-    #     restart: always
-    #     command: >
-    #         /bin/bash -c "
-    #         sleep 2;
-    #         ./build/main node;"
-    #     networks:
-    #         vpcbr:
-    #             ipv4_address: 172.28.0.4
+    blockchain_node1:
+        build:
+            context: .
+        container_name: node1
+        environment:
+            - TZ=Asia/Taipei
+        restart: always
+        command: >
+            /bin/bash -c "
+            sleep 2;
+            ./build/main node;"
+        networks:
+            vpcbr:
+                ipv4_address: 172.28.0.4
 
     # blockchain_node2:
     #     build:
