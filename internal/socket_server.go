@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"strconv"
 	"time"
 
+	"github.com/yeejiac/BlockChain/models"
 	"gopkg.in/ini.v1"
 )
 
@@ -39,12 +41,13 @@ func StartServer() {
 		}
 		connectionMap[sequence] = conn
 		sequence++
-		go Handle(conn)
-		go SendHeartbeat(conn)
+		go waitClientMsg(conn)
+		go sendHeartbeat(conn)
+		TestClientHandle(conn)
 	}
 }
 
-func Handle(conn net.Conn) {
+func waitClientMsg(conn net.Conn) {
 	for {
 		bs := make([]byte, 1024)
 		len, err := conn.Read(bs)
@@ -53,14 +56,15 @@ func Handle(conn net.Conn) {
 			break
 		} else {
 			log.Println(string(bs[:len]))
+			HandleMsg(string(bs[:len]))
 		}
 	}
 	fmt.Println("連線中斷.")
 }
 
-func SendHeartbeat(conn net.Conn) {
+func sendHeartbeat(conn net.Conn) {
 	for {
-		conn.Write([]byte("<3\n"))
+		conn.Write([]byte("<3"))
 		time.Sleep(5 * time.Second)
 	}
 }
@@ -76,23 +80,36 @@ func BroadCast(msg string) {
 	fmt.Println("BroadCast finished")
 }
 
-func HandelServerMsg(rawStr string) {
+func HandleMsg(rawStr string) {
+	if rawStr == "<3" {
+		return
+	}
 	num, err := strconv.Atoi(rawStr[0:2])
 	if err != nil {
 		// handle error
 		fmt.Println("Invalid message stucture")
 		return
 	}
-
 	switch num {
-	case 10:
-		log.Println("Get New Transaction")
-		HandleNewTransaction(rawStr)
-	case 20:
-		log.Println("Get hash block str")
-		res := HandleHashBlock(rawStr)
-		SendMsg(res)
+	case 40:
+		log.Println("Get Nonce")
 	default:
 		fmt.Println("Invalid message")
 	}
+}
+
+func TestClientHandle(conn net.Conn) {
+	if mode == models.TEST {
+		cfg, err := ini.Load("./test/test.ini")
+		if err != nil {
+			fmt.Printf("Fail to read file: %v", err)
+			return
+		}
+		testList := cfg.Section("ClientTest").KeysHash()
+		for key := range testList {
+			conn.Write([]byte(testList[key] + "\n"))
+			time.Sleep(1 * time.Second)
+		}
+	}
+	os.Exit(0)
 }

@@ -9,27 +9,37 @@ import (
 
 	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
+	"gopkg.in/ini.v1"
 )
 
 var socket_connection net.Conn
+var mode models.Mode
+
+func SetMode(modeType models.Mode) {
+	mode = modeType
+}
 
 func StartClient() {
-	// cfg, err := ini.Load("./config/setting.ini")
-	// if err != nil {
-	// 	fmt.Printf("Fail to read file: %v", err)
-	// 	return
-	// }
+	cfg, err := ini.Load("./config/setting.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		return
+	}
 	// addr := cfg.Section("socket").Key("addr").String() + ":"
-	// port := cfg.Section("socket").Key("port").String()
-	fmt.Println("Try connect to socket server: 172.28.0.3:1203")
-	conn, err := net.Dial("tcp", "172.28.0.3:1203")
+	port := cfg.Section("socket").Key("port").String()
+	addr := ":"
+	if mode == models.TEST {
+		addr = "172.28.0.3:"
+	}
+	fmt.Println("Try connect to socket server: " + addr + port)
+	conn, err := net.Dial("tcp", addr+port)
 	if err != nil {
 		fmt.Println("Connect failed")
 	}
 	defer conn.Close()
 	fmt.Println("Connect to server success")
 	socket_connection = conn
-	go SendHeartbeat(conn)
+	go sendHeartbeat(conn)
 	receive(conn)
 }
 
@@ -52,25 +62,35 @@ func receive(conn net.Conn) {
 		len, err := conn.Read(bs)
 		if err != nil {
 			log.Println(err)
+			break
 		} else {
 			log.Println(string(bs[:len]))
+			HandleMsg(string(bs[:len]))
 		}
 	}
 }
 
-func HandleMsg(rawStr string) {
+func HandelServerMsg(rawStr string) {
+	if rawStr == "<3" {
+		return
+	}
 	num, err := strconv.Atoi(rawStr[0:2])
 	if err != nil {
 		// handle error
-		fmt.Println("Invalid message stucture")
+		fmt.Println("Invalid message stucture: " + rawStr)
 		return
 	}
 
 	switch num {
-	case 40:
-		log.Println("Get Nonce")
+	case 10:
+		log.Println("Get New Transaction")
+		HandleNewTransaction(rawStr)
+	case 20:
+		log.Println("Get hash block str")
+		res := HandleHashBlock(rawStr)
+		SendMsg(res)
 	default:
-		fmt.Println("Invalid message")
+		fmt.Println("Invalid message: " + rawStr)
 	}
 }
 

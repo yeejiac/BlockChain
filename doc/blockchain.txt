@@ -1,4 +1,4 @@
-Client Side Receive
+Client Side Send to server
 New Transaction
 10|Sender|Receiver|amount|
 10|yeejiac|Arisa|100|

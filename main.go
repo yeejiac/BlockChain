@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/yeejiac/BlockChain/internal"
+	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
 )
 
@@ -15,6 +16,10 @@ func main() {
 	// }
 	// defer f.Close()
 	// log.SetOutput(f)
+	if os.Args[2] == "test" {
+		fmt.Println("Test mode start")
+		internal.SetMode(models.TEST)
+	}
 	if os.Args[1] == "node" {
 		fmt.Println("Node mode start")
 		internal.StartClient()
