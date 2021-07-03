@@ -43,7 +43,7 @@ func StartServer() {
 		sequence++
 		go waitClientMsg(conn)
 		go sendHeartbeat(conn)
-		TestClientHandle(conn)
+		go TestClientHandle(conn)
 	}
 }
 
@@ -93,6 +93,10 @@ func HandleMsg(rawStr string) {
 	switch num {
 	case 40:
 		log.Println("Get Nonce")
+	case 44:
+		if mode == models.TEST {
+			os.Exit(0)
+		}
 	default:
 		fmt.Println("Invalid message")
 	}
@@ -111,5 +115,5 @@ func TestClientHandle(conn net.Conn) {
 			time.Sleep(1 * time.Second)
 		}
 	}
-	os.Exit(0)
+	// os.Exit(0)
 }

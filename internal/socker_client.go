@@ -6,6 +6,7 @@ import (
 	"net"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/yeejiac/BlockChain/models"
 	"github.com/yeejiac/BlockChain/src"
@@ -39,6 +40,7 @@ func StartClient() {
 	defer conn.Close()
 	fmt.Println("Connect to server success")
 	socket_connection = conn
+	go TestServerHandle(conn)
 	go sendHeartbeat(conn)
 	receive(conn)
 }
@@ -109,4 +111,20 @@ func HandleNewTransaction(rawStr string) {
 func HandleHashBlock(hashStr string) string {
 	nonce := src.NonceCalculate(hashStr)
 	return strconv.Itoa(nonce)
+}
+
+func TestServerHandle(conn net.Conn) {
+	if mode == models.TEST {
+		cfg, err := ini.Load("./test/test.ini")
+		if err != nil {
+			fmt.Printf("Fail to read file: %v", err)
+			return
+		}
+		testList := cfg.Section("ServerTest").KeysHash()
+		for key := range testList {
+			conn.Write([]byte(testList[key] + "\n"))
+			time.Sleep(1 * time.Second)
+		}
+	}
+	// os.Exit(0)
 }
